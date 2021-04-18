@@ -11,6 +11,7 @@ import lombok.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -26,10 +27,13 @@ public class Main {
                 .addColumn("field2")
                 .build().withHeader();
         ObjectWriter writer = mapper.writerFor(Temp2.class).with(schema);
-//        for (Temp2 temp2 : temp1.list) {
-//            System.out.println(writer.writeValueAsString(temp2));
-//        }
-        writer.writeValues(new File("sample.csv")).writeAll(temp1.list);
+
+        // write single Temp2 object
+        writer.writeValueAsString(new Temp2());
+
+        // write list of Temp2 objects
+        List<Temp2> temp2List = Arrays.asList(new Temp2(), new Temp2());
+        writer.writeValues(new File("sample.csv")).writeAll(temp2List);
     }
 
     public MappingIterator<Temp2> read(File csvFile) throws IOException {
